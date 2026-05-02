@@ -2,7 +2,8 @@
 
 > AI-powered VC portfolio intelligence platform. Upload your portfolio data and get ML-driven forecasting, anomaly detection, and natural language insights.
 
-🔗 **Live Demo**: coming soon
+🔗 **Live Demo**: https://pulsevc-frontend.onrender.com
+🔗 **API Docs**: https://pulsevc-backend.onrender.com/docs
 📂 **GitHub**: https://github.com/iamgaurav07/pulsevc
 
 ---
