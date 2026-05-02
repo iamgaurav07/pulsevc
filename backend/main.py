@@ -22,6 +22,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://*.render.com",
         "https://*.onrender.com",
+        "https://pulsevc-frontend.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
