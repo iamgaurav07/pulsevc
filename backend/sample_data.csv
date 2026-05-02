@@ -1,0 +1,19 @@
+company_name,sector,stage,founded_year,country,date,revenue,growth_rate,burn_rate,runway_months,headcount,arr
+TechVenture A,SaaS,series_a,2020,Germany,2024-01,50000,15.2,30000,18,25,600000
+TechVenture A,SaaS,series_a,2020,Germany,2024-02,57500,15.0,31000,16,26,690000
+TechVenture A,SaaS,series_a,2020,Germany,2024-03,66125,15.0,32000,14,28,793500
+TechVenture A,SaaS,series_a,2020,Germany,2024-04,76044,15.1,33000,12,29,912528
+TechVenture A,SaaS,series_a,2020,Germany,2024-05,87450,15.0,35000,10,30,1049400
+TechVenture A,SaaS,series_a,2020,Germany,2024-06,100568,15.0,38000,8,32,1206816
+FinTech B,Fintech,seed,2022,Germany,2024-01,20000,8.5,45000,6,10,240000
+FinTech B,Fintech,seed,2022,Germany,2024-02,21700,8.5,46000,5,10,260400
+FinTech B,Fintech,seed,2022,Germany,2024-03,23552,8.5,50000,3,11,282624
+FinTech B,Fintech,seed,2022,Germany,2024-04,25554,8.5,55000,1,11,306648
+FinTech B,Fintech,seed,2022,Germany,2024-05,27726,8.5,60000,-1,12,332712
+FinTech B,Fintech,seed,2022,Germany,2024-06,30083,8.5,65000,-3,12,360996
+HealthTech C,Healthcare,series_b,2019,Germany,2024-01,200000,25.0,80000,24,80,2400000
+HealthTech C,Healthcare,series_b,2019,Germany,2024-02,250000,25.0,82000,23,85,3000000
+HealthTech C,Healthcare,series_b,2019,Germany,2024-03,312500,25.0,85000,22,90,3750000
+HealthTech C,Healthcare,series_b,2019,Germany,2024-04,390625,25.0,88000,21,95,4687500
+HealthTech C,Healthcare,series_b,2019,Germany,2024-05,488281,25.0,90000,20,100,5859372
+HealthTech C,Healthcare,series_b,2019,Germany,2024-06,610352,25.1,92000,19,108,7324224
