@@ -12,6 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Navbar } from "@/app/components/Navbar";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const PER_PAGE = 20;
@@ -302,18 +303,25 @@ export default function PortfolioPage() {
   if (loading) {
     return (
       <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
-        <nav
-          style={{
-            borderBottom: "1px solid var(--border)",
-            padding: "0 32px",
-            height: "56px",
-            display: "flex",
-            alignItems: "center",
-            background: "var(--bg)",
-          }}
-        >
-          <Skeleton width={200} height={16} />
-        </nav>
+        <Navbar
+          backHref="/dashboard"
+          backLabel="Dashboard"
+          title={portfolio?.name}
+          rightContent={
+            <span
+              style={{
+                fontSize: "12px",
+                color: "var(--text-tertiary)",
+                background: "var(--bg-card)",
+                padding: "3px 10px",
+                borderRadius: "20px",
+                border: "1px solid var(--border)",
+              }}
+            >
+              {portfolio?.companies?.length} companies
+            </span>
+          }
+        />
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px" }}>
           <div
             style={{
