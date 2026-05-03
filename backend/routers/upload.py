@@ -17,27 +17,18 @@ async def upload_csv(
     user_id: str = "default_user",
     db: Session = Depends(get_db)
 ):
-    # validate file type
     if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are supported")
 
     try:
-        # read csv
         contents = await file.read()
         df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
-
-        # validate required columns
         missing = REQUIRED_COLUMNS - set(df.columns)
         if missing:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Missing required columns: {missing}. Required: {REQUIRED_COLUMNS}"
-            )
+            raise HTTPException(status_code=400, detail=f"Missing required columns: {missing}")
 
-        # clean column names
         df.columns = df.columns.str.strip().str.lower()
 
-        # create portfolio
         portfolio = Portfolio(
             id=str(uuid.uuid4()),
             name=portfolio_name,
@@ -46,15 +37,12 @@ async def upload_csv(
         db.add(portfolio)
         db.flush()
 
-        # group by company
         company_groups = df.groupby("company_name")
         companies_created = 0
         metrics_created = 0
 
         for company_name, group in company_groups:
-            # get company info from first row
             first_row = group.iloc[0]
-
             company = Company(
                 id=str(uuid.uuid4()),
                 portfolio_id=portfolio.id,
@@ -68,7 +56,6 @@ async def upload_csv(
             db.flush()
             companies_created += 1
 
-            # add metrics for each row
             for _, row in group.iterrows():
                 metric = CompanyMetric(
                     id=str(uuid.uuid4()),
@@ -85,7 +72,6 @@ async def upload_csv(
                 metrics_created += 1
 
         db.commit()
-
         return {
             "success": True,
             "portfolio_id": portfolio.id,
@@ -143,3 +129,14 @@ async def get_portfolio(portfolio_id: str, db: Session = Depends(get_db)):
             for c in portfolio.companies
         ]
     }
+
+@router.delete("/portfolio/{portfolio_id}")
+async def delete_portfolio(portfolio_id: str, db: Session = Depends(get_db)):
+    portfolio = db.query(Portfolio).filter(Portfolio.id == portfolio_id).first()
+    if not portfolio:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+
+    db.delete(portfolio)
+    db.commit()
+
+    return {"success": True, "message": "Portfolio deleted successfully"}

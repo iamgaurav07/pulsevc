@@ -85,6 +85,19 @@ export default function DashboardPage() {
     }
   };
 
+  const deletePortfolio = async (id: string, name: string) => {
+    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${API_URL}/upload/portfolio/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+      refreshPortfolios();
+    } catch {
+      setError("Failed to delete portfolio");
+    }
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       <Navbar />
@@ -371,112 +384,132 @@ export default function DashboardPage() {
               }}
             >
               {portfolios.map((portfolio) => (
-                <Link
-                  key={portfolio.id}
-                  href={`/portfolio/${portfolio.id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div
-                    style={{
-                      background: "var(--bg-card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius-lg)",
-                      padding: "24px",
-                      transition: "all 0.2s",
-                      cursor: "pointer",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "var(--accent)";
-                      e.currentTarget.style.boxShadow =
-                        "0 0 0 1px var(--accent), 0 4px 20px rgba(99,102,241,0.15)";
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "var(--border)";
-                      e.currentTarget.style.boxShadow = "none";
-                      e.currentTarget.style.transform = "none";
-                    }}
+                <div key={portfolio.id} style={{ position: "relative" }}>
+                  <Link
+                    href={`/portfolio/${portfolio.id}`}
+                    style={{ textDecoration: "none" }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        justifyContent: "space-between",
-                        marginBottom: "16px",
+                        background: "var(--bg-card)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-lg)",
+                        padding: "24px",
+                        transition: "all 0.2s",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                        e.currentTarget.style.boxShadow =
+                          "0 0 0 1px var(--accent), 0 4px 20px rgba(99,102,241,0.15)";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "var(--border)";
+                        e.currentTarget.style.boxShadow = "none";
+                        e.currentTarget.style.transform = "none";
                       }}
                     >
                       <div
                         style={{
-                          width: "40px",
-                          height: "40px",
-                          background: "var(--accent-light)",
-                          borderRadius: "10px",
                           display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "18px",
-                          border: "1px solid rgba(99,102,241,0.2)",
+                          alignItems: "flex-start",
+                          justifyContent: "space-between",
+                          marginBottom: "16px",
                         }}
                       >
-                        📊
+                        <div
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            background: "var(--accent-light)",
+                            borderRadius: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "18px",
+                            border: "1px solid rgba(99,102,241,0.2)",
+                          }}
+                        >
+                          📊
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "11px",
+                            color: "var(--text-tertiary)",
+                            background: "var(--bg)",
+                            padding: "3px 10px",
+                            borderRadius: "20px",
+                            border: "1px solid var(--border)",
+                          }}
+                        >
+                          {portfolio.company_count} companies
+                        </span>
                       </div>
-                      <span
+                      <h3
                         style={{
-                          fontSize: "11px",
-                          color: "var(--text-tertiary)",
-                          background: "var(--bg)",
-                          padding: "3px 10px",
-                          borderRadius: "20px",
-                          border: "1px solid var(--border)",
+                          fontSize: "15px",
+                          fontWeight: "600",
+                          color: "var(--text-primary)",
+                          marginBottom: "6px",
                         }}
                       >
-                        {portfolio.company_count} companies
-                      </span>
-                    </div>
-                    <h3
-                      style={{
-                        fontSize: "15px",
-                        fontWeight: "600",
-                        color: "var(--text-primary)",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      {portfolio.name}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: "12px",
-                        color: "var(--text-tertiary)",
-                      }}
-                    >
-                      Created{" "}
-                      {new Date(portfolio.created_at).toLocaleDateString(
-                        "en-GB",
-                        { day: "numeric", month: "short", year: "numeric" },
-                      )}
-                    </p>
-                    <div
-                      style={{
-                        marginTop: "16px",
-                        paddingTop: "14px",
-                        borderTop: "1px solid var(--border)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span
+                        {portfolio.name}
+                      </h3>
+                      <p
                         style={{
                           fontSize: "12px",
-                          color: "var(--accent)",
-                          fontWeight: "600",
+                          color: "var(--text-tertiary)",
                         }}
                       >
-                        View analysis →
-                      </span>
+                        Created{" "}
+                        {new Date(portfolio.created_at).toLocaleDateString(
+                          "en-GB",
+                          { day: "numeric", month: "short", year: "numeric" },
+                        )}
+                      </p>
+                      <div
+                        style={{
+                          marginTop: "16px",
+                          paddingTop: "14px",
+                          borderTop: "1px solid var(--border)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            color: "var(--accent)",
+                            fontWeight: "600",
+                          }}
+                        >
+                          View analysis →
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deletePortfolio(portfolio.id, portfolio.name);
+                          }}
+                          style={{
+                            fontSize: "11px",
+                            color: "var(--danger)",
+                            background: "var(--danger-light)",
+                            border: "1px solid rgba(239,68,68,0.2)",
+                            padding: "4px 10px",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontWeight: "500",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </div>
           )}
