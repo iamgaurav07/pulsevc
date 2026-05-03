@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  ...compat.extends("next/core-web-vitals"),
+  {
+    rules: {
+      "react-compiler/react-compiler": "off",
+    }
+  }
 ]);
 
 export default eslintConfig;
