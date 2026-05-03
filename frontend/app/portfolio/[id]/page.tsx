@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Navbar } from "@/app/components/Navbar";
+import { PDFReport } from "@/app/components/PDFReport";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const PER_PAGE = 20;
@@ -379,56 +380,33 @@ export default function PortfolioPage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       {/* Navbar */}
-      <nav
-        style={{
-          borderBottom: "1px solid var(--border)",
-          padding: "0 32px",
-          height: "56px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
-          background: "rgba(15,17,23,0.9)",
-          backdropFilter: "blur(12px)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <Link
-            href="/dashboard"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "13px",
-              color: "var(--text-secondary)",
-              textDecoration: "none",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "1px solid var(--border)",
-            }}
-          >
-            ← Back
-          </Link>
-          <span style={{ color: "var(--border)" }}>/</span>
-          <span style={{ fontSize: "14px", fontWeight: "600" }}>
-            {portfolio?.name}
-          </span>
-        </div>
-        <span
-          style={{
-            fontSize: "12px",
-            color: "var(--text-tertiary)",
-            background: "var(--bg-card)",
-            padding: "3px 10px",
-            borderRadius: "20px",
-            border: "1px solid var(--border)",
-          }}
-        >
-          {portfolio?.companies?.length} companies
-        </span>
-      </nav>
+      <Navbar
+        backHref="/dashboard"
+        backLabel="Dashboard"
+        title={portfolio?.name}
+        rightContent={
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {portfolio && (
+              <PDFReport
+                portfolioId={portfolioId}
+                portfolioName={portfolio.name}
+              />
+            )}
+            <span
+              style={{
+                fontSize: "12px",
+                color: "var(--text-tertiary)",
+                background: "var(--bg-card)",
+                padding: "3px 10px",
+                borderRadius: "20px",
+                border: "1px solid var(--border)",
+              }}
+            >
+              {portfolio?.companies?.length} companies
+            </span>
+          </div>
+        }
+      />
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px" }}>
         {/* Tabs */}
