@@ -27,7 +27,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.setAttribute("data-theme", next)
   }
 
-  // prevent flash of wrong theme
   if (!mounted) return null
 
   return (
