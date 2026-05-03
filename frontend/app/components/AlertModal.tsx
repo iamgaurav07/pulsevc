@@ -7,6 +7,8 @@ type AlertModalProps = {
   portfolioName: string
 }
 
+/* This is a comment for the AlertModal component */
+
 export function AlertModal({ portfolioId, portfolioName }: AlertModalProps) {
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
