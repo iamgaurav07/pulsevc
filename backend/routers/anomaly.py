@@ -6,6 +6,9 @@ from ml.anomaly import detect_anomalies
 from ml.clustering import cluster_companies
 import json
 import uuid
+from ml.alerts import send_alert_email
+from pydantic import BaseModel
+import os
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -109,4 +112,41 @@ async def clustering_analysis(
         "portfolio_id": portfolio_id,
         "portfolio_name": portfolio.name,
         **result,
+    }
+
+class AlertRequest(BaseModel):
+    email: str
+
+@router.post("/alert/{portfolio_id}")
+async def send_portfolio_alert(
+    portfolio_id: str,
+    request: AlertRequest,
+    db: Session = Depends(get_db)
+):
+    portfolio = db.query(Portfolio).filter(Portfolio.id == portfolio_id).first()
+    if not portfolio:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+
+    # run anomaly detection first
+    companies_data = build_companies_data(portfolio)
+    results = detect_anomalies(companies_data)
+
+    critical = [c for c in results if c["status"] == "danger"]
+    warning = [c for c in results if c["status"] == "watch"]
+
+    if not critical and not warning:
+        return {"success": False, "message": "No alerts to send — all companies are healthy!"}
+
+    result = send_alert_email(
+        portfolio_name=portfolio.name,
+        critical_companies=critical,
+        warning_companies=warning,
+        recipient_email=request.email,
+    )
+
+    return {
+        "success": result.get("success"),
+        "message": f"Alert sent to {request.email}" if result.get("success") else result.get("error"),
+        "critical_count": len(critical),
+        "warning_count": len(warning),
     }

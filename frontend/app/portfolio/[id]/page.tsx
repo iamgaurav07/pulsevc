@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { Navbar } from "@/app/components/Navbar";
 import { PDFReport } from "@/app/components/PDFReport";
+import { AlertModal } from "@/app/components/AlertModal";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const PER_PAGE = 20;
@@ -309,18 +310,20 @@ export default function PortfolioPage() {
           backLabel="Dashboard"
           title={portfolio?.name}
           rightContent={
-            <span
-              style={{
-                fontSize: "12px",
-                color: "var(--text-tertiary)",
-                background: "var(--bg-card)",
-                padding: "3px 10px",
-                borderRadius: "20px",
-                border: "1px solid var(--border)",
-              }}
-            >
-              {portfolio?.companies?.length} companies
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "var(--text-tertiary)",
+                  background: "var(--bg-card)",
+                  padding: "3px 10px",
+                  borderRadius: "20px",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                {portfolio?.companies?.length} companies
+              </span>
+            </div>
           }
         />
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "32px" }}>
@@ -413,41 +416,63 @@ export default function PortfolioPage() {
         <div
           style={{
             display: "flex",
-            gap: "4px",
+            alignItems: "center",
+            justifyContent: "space-between",
             marginBottom: "32px",
-            background: "var(--bg-card)",
-            padding: "4px",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--border)",
-            width: "fit-content",
+            flexWrap: "wrap",
+            gap: "12px",
           }}
         >
-          {[
-            { key: "overview", label: "📊 Overview" },
-            { key: "forecast", label: "📈 Forecast" },
-            { key: "anomaly", label: "🚨 Anomaly" },
-            { key: "chat", label: "💬 Ask AI" },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => handleTabChange(tab.key as typeof activeTab)}
-              style={{
-                fontSize: "13px",
-                fontWeight: "500",
-                padding: "8px 16px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                transition: "all 0.15s",
-                background:
-                  activeTab === tab.key ? "var(--accent)" : "transparent",
-                color:
-                  activeTab === tab.key ? "white" : "var(--text-secondary)",
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
+          {/* Tabs */}
+          <div
+            style={{
+              display: "flex",
+              gap: "4px",
+              background: "var(--bg-card)",
+              padding: "4px",
+              borderRadius: "var(--radius)",
+              border: "1px solid var(--border)",
+            }}
+          >
+            {[
+              { key: "overview", label: "📊 Overview" },
+              { key: "forecast", label: "📈 Forecast" },
+              { key: "anomaly", label: "🚨 Anomaly" },
+              { key: "chat", label: "💬 Ask AI" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => handleTabChange(tab.key as typeof activeTab)}
+                style={{
+                  fontSize: "13px",
+                  fontWeight: "500",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                  background:
+                    activeTab === tab.key ? "var(--accent)" : "transparent",
+                  color:
+                    activeTab === tab.key ? "white" : "var(--text-secondary)",
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <AlertModal
+              portfolioId={portfolioId}
+              portfolioName={portfolio?.name ?? "Portfolio"}
+            />
+            <PDFReport
+              portfolioId={portfolioId}
+              portfolioName={portfolio?.name ?? "Portfolio"}
+            />
+          </div>
         </div>
 
         {/* ── OVERVIEW TAB ─────────────────────────────── */}

@@ -112,3 +112,18 @@ body {
   .mobile-stack { flex-direction: column !important; }
   .mobile-padding { padding: 16px !important; }
 }
+
+/* ── Mobile responsive ─────────────────────── */
+@media (max-width: 768px) {
+
+  /* Navbar */
+  nav {
+    padding: 0 16px !important;
+  }
+
+  /* Main containers */
+  div[style*="max-width: 1100px"],
+  div[style*="max-width:1100px"] {
+    padding: 20px 16px !important;
+  }
+}
