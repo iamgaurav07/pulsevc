@@ -7,7 +7,7 @@ type AlertModalProps = {
   portfolioName: string
 }
 
-/* This is a comment for the AlertModal component */
+/* This is coment for the */
 
 export function AlertModal({ portfolioId, portfolioName }: AlertModalProps) {
   const [open, setOpen] = useState(false)
@@ -18,7 +18,7 @@ export function AlertModal({ portfolioId, portfolioName }: AlertModalProps) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
   const sendAlert = async () => {
-    if (!email || !email.includes("@")1 1231 return;;;;;;;;;;
+    if (!email || !email.includes("@")) return
     setSending(true)
     setResult(null)
     try {
