@@ -18,7 +18,7 @@ export function AlertModal({ portfolioId, portfolioName }: AlertModalProps) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
   const sendAlert = async () => {
-    if (!email || !email.includes("@")) return
+    if (!email || !email.includes("@")1 1231 return;;;;;;;;;;
     setSending(true)
     setResult(null)
     try {
